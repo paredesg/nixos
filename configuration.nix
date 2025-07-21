@@ -16,9 +16,38 @@ in
     ];
 
 
+   # Configure Home Manager for your user
+  users.users.eve = {
+    isNormalUser = true;
+    description = "Utilisateur TEST";
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
+  };
+  users.users.eve.openssh.authorizedKeys.keyFiles = [
+    /etc/nixos/authorized_keys
+  ];
+
+  home-manager.users.eve = { pkgs, ... }: {
+    # Add packages you want installed for this user
+    # home.packages = [ pkgs.atool pkgs.httpie ];
+    programs.bash.enable = true;
+  
+    # The state version is required and should stay at the version you
+    # originally installed.
+    home.stateVersion = "25.05";
+  };
+
   # Use the systemd-boot EFI boot loader.
+  # VM VirtualBox OK
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # VM VirtualBox OK
+
+  #boot.loader.grub.enable = true;
+  #boot.loader.grub.efiSupport = true;
+  #boot.loader.grub.efiInstallAsRemovable = true;
+  #boot.loader.grub.device = "/dev/sda";
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -27,16 +56,48 @@ in
   time.timeZone = "Europe/Paris";
 
   # Configure console keymap
-  console.keyMap = "fr";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "fr";
+    #useXkbConfig = true; # use xkb.options in tty.
+  };
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+  i18n.defaultLocale = "fr_FR.UTF-8";
 
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "fr_FR.UTF-8";
+    LC_IDENTIFICATION = "fr_FR.UTF-8";
+    LC_MEASUREMENT = "fr_FR.UTF-8";
+    LC_MONETARY = "fr_FR.UTF-8";
+    LC_NAME = "fr_FR.UTF-8";
+    LC_NUMERIC = "fr_FR.UTF-8";
+    LC_PAPER = "fr_FR.UTF-8";
+    LC_TELEPHONE = "fr_FR.UTF-8";
+    LC_TIME = "fr_FR.UTF-8";
+  };
+
+  ## Enable the X11 windowing system.
+  #services.xserver = {
+  #    xkb.layout = "fr";
+  #    xkb.variant = "";
+  #    enable = true;
+  #    displayManager = {
+  #        sddm.enable = true;
+  #        sddm.theme = "maya";
+  #        sddm.autoNumlock = true;
+  #    };
+  #};
+#
+#
+  #programs.hyprland = {
+  #    enable = true;
+  #};
+#
+  #programs.hyprland.xwayland = {
+  #    enable = true;
+  #};
+ 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
   # services.xserver.xkb.layout = "us";
@@ -74,12 +135,22 @@ in
     wget
     git
     htop
+    pciutils
+    hyprland
+    ranger
+    rofi-wayland
+    waybar
+    wofi
+    terraform
+    docker
   ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowInsecure = true;
 
   # List services that you want to enable:
+  virtualisation.docker.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
