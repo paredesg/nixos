@@ -1,181 +1,121 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
 { config, lib, pkgs, ... }:
-
-let
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz;
-  diskoo = builtins.fetchTarball https://github.com/nix-community/disko/archive/master.tar.gz;
-in
-
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./disko-config.nix
-      (import "${home-manager}/nixos")
-      (import "${diskoo}/module.nix")
     ];
 
-
-   # Configure Home Manager for your user
-  users.users.eve = {
-    isNormalUser = true;
-    description = "Utilisateur TEST";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-  };
-  users.users.eve.openssh.authorizedKeys.keyFiles = [
-    /etc/nixos/authorized_keys
-  ];
-
-  home-manager.users.eve = { pkgs, ... }: {
-    # Add packages you want installed for this user
-    # home.packages = [ pkgs.atool pkgs.httpie ];
-    programs.bash.enable = true;
-  
-    # The state version is required and should stay at the version you
-    # originally installed.
-    home.stateVersion = "25.05";
-  };
-
   # Use the systemd-boot EFI boot loader.
-  # VM VirtualBox OK
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # VM VirtualBox OK
-
-  #boot.loader.grub.enable = true;
-  #boot.loader.grub.efiSupport = true;
-  #boot.loader.grub.efiInstallAsRemovable = true;
-  #boot.loader.grub.device = "/dev/sda";
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "nixos"; # Define your hostname.
+  
+  networking.hostName = "nixos-btw"; # Define your hostname.
+  # Pick only one of the below networking options.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 
-  # Configure console keymap
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "fr";
-    #useXkbConfig = true; # use xkb.options in tty.
+  # autorise installation packages proprietaire
+  nixpkgs.config.allowUnfree = true;
+
+  #SSH 
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      PermitRootLogin = "yes";
+    };
   };
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "fr_FR.UTF-8";
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  i18n.extraLocaleSettings = {
+  # Select internationalisation properties.
+    i18n.defaultLocale = "fr_FR.UTF-8";
+
+    i18n.extraLocaleSettings = {
+    # LC_ALL = "fr_FR.UTF-8"; # This overrides all other LC_* settings.
+    LC_CTYPE = "fr_FR.UTF8";
     LC_ADDRESS = "fr_FR.UTF-8";
-    LC_IDENTIFICATION = "fr_FR.UTF-8";
     LC_MEASUREMENT = "fr_FR.UTF-8";
+    LC_MESSAGES = "fr_FR.UTF-8";
     LC_MONETARY = "fr_FR.UTF-8";
     LC_NAME = "fr_FR.UTF-8";
     LC_NUMERIC = "fr_FR.UTF-8";
     LC_PAPER = "fr_FR.UTF-8";
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
-  };
+    LC_COLLATE = "fr_FR.UTF-8";
+    };
 
-  ## Enable the X11 windowing system.
-  #services.xserver = {
-  #    xkb.layout = "fr";
-  #    xkb.variant = "";
-  #    enable = true;
-  #    displayManager = {
-  #        sddm.enable = true;
-  #        sddm.theme = "maya";
-  #        sddm.autoNumlock = true;
-  #    };
-  #};
-#
-#
-  #programs.hyprland = {
-  #    enable = true;
-  #};
-#
-  #programs.hyprland.xwayland = {
-  #    enable = true;
-  #};
- 
+#    console = {
+#      font = "Lat2-Terminus16";
+#      keyMap = "fr";
+#      useXkbConfig = true; # use xkb.options in tty.
+#    };
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+	services.xserver = {
+		enable = true;
+		windowManager.qtile.enable = true;
+        xkb.layout = "fr";
+	
+	};
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # services.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+	#services.picom = {
+	#	enable = true;
+	#	backend = "glx";
+	#	fade = true;
+	#};
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     tree
-  #   ];
-  # };
+  users.users.loulou = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      tree
+      bat
+      curl
+      dig
+      hurl
+      httpie
+      mc
+      terraform
+    ];
+  };
 
-  # programs.firefox.enable = true;
+  programs.firefox.enable = true;
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    git
-    htop
-    pciutils
-    hyprland
-    ranger
-    rofi-wayland
-    waybar
-    wofi
-    terraform
-    docker
+		neovim
+		alacritty
+		btop
+		gedit
+		xwallpaper
+		pcmanfm
+		rofi
+		git
+		pfetch
   ];
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowInsecure = true;
+	fonts.packages = with pkgs; [
+		jetbrains-mono
+	];
 
-  # List services that you want to enable:
-  virtualisation.docker.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = true;
-    settings.PermitRootLogin = "yes";
-  };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-
-
-
-
-
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-
-  system.stateVersion = "25.05"; # Did you read the comment?
+   system.stateVersion = "25.05"; # Did you read the comment?
 
 }
-
