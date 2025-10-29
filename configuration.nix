@@ -14,7 +14,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
-  networking.hostName = "nixos-btw"; # Define your hostname.
+  networking.hostName = "nixos-vm"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -86,11 +86,7 @@
       tree
       bat
       curl
-      dig
-      hurl
-      httpie
       mc
-      terraform
     ];
   };
 
@@ -101,15 +97,10 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-		neovim
-		alacritty
-		btop
-		gedit
-		xwallpaper
-		pcmanfm
-		rofi
-		git
-		pfetch
+	vim
+	alacritty
+	git
+	pfetch
   ];
 
 	fonts.packages = with pkgs; [
