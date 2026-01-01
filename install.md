@@ -31,8 +31,9 @@ swapon /dev/sda2
 ## install flake et home manager
 cd /mnt/etc/nixos
 
-git clone 
+git clone https://github.com/paredesg/nixos.git
 
 nixos-install --flake /mnt/etc/nixos#nixos-vm
 nixos-enter --root /mnt -c 'passwd eve'
 reboot
+
