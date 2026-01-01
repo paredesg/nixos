@@ -1,31 +1,38 @@
-1. modif keyboard
+## Install Nix os on VM virtualbox
 
-sudo loadkeys fr
+0 sudo -i
+1 sudo loadkeys fr
+2 passwd (definir password root user)
 
-2. modif password nisos and root users
+lsblk
 
+cfdisk /dev/sda
+    gpt
+    new 1G  type    EFI Sytem
+    new 4G  type    Linux Swap
+    new "le reste"  type    Linux file system
 
-3. load disko module 
-curl -L https://gist.githubusercontent.com/paredesg/0ccaf5386e7bb667474e2d5095f8a553/raw/de23423d81d59bc87892491907bd8bb24286cf5c/disko-config.nix -o /tmp/disko-config.nix
+    write   yes
+    quit
 
-4. execute module with disko config 
-nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko-config.nix
-nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --yes-wipe-all-disks /tmp/disko-config.nix
+lsblk pour check
 
-5. generate nix config file
-nixos-generate-config --no-filesystems --root /mnt
-nixos-generate-config --root /mnt
-
-
-6. copy configuration file
-cp /tmp/disko-config.nix /mnt/etc/nixos
-cp /root/authorized_keys /etc/nixos
-cp /root/configuration.nix /mnt/etc/nixos 
-
-
-7. install
-nixos-install
+mkfs.ext4 -L nixos /dev/sda3
+mkswap -L swap /dev/sda2
+mkfs.fat -F 32 -n boot /dev/sda1
 
 
-8. rebuild
-nixos-rebuild switch
+## install NIXOS
+
+mount /dev/sda3 /mnt
+mount --mkdir /dev/sda1 /mnt/boot
+swapon /dev/sda2
+
+## install flake et home manager
+cd /mnt/etc/nixos
+
+git clone 
+
+nixos-install --flake /mnt/etc/nixos#nixos-vm
+nixos-enter --root /mnt -c 'passwd eve'
+reboot
