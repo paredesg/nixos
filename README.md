@@ -7,6 +7,7 @@
 lsblk
 
 cfdisk /dev/sda :
+
 -gpt
 -new 1G  type    EFI Sytem
 -new 4G  type    Linux Swap
@@ -17,22 +18,27 @@ cfdisk /dev/sda :
 lsblk pour check
 
 sda:
+
 mkfs.ext4 -L nixos /dev/sda3
 mkswap -L swap /dev/sda2
 mkfs.fat -F 32 -n boot /dev/sda1
 
 nvme:
+
 mkfs.ext4 -L nixos /dev/nvme0n1p3
 mkswap -L swap /dev/nvme0n1p2
 mkfs.fat -F 32 -n boot /dev/nvme0n1p1
 
 ## install NIXOS
+
 sda:
+
 mount /dev/sda3 /mnt
 mount --mkdir /dev/sda1 /mnt/boot
 swapon /dev/sda2
 
 nvme:
+
 mount /dev/nvme0n1p3 /mnt
 mount --mkdir /dev/nvme0n1p1 /mnt/boot
 swapon /dev/nvme0n1p2
