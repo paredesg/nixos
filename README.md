@@ -6,14 +6,13 @@
 
 lsblk
 
-cfdisk /dev/sda
-    gpt
-    new 1G  type    EFI Sytem
-    new 4G  type    Linux Swap
-    new "le reste"  type    Linux file system
-
-    write   yes
-    quit
+cfdisk /dev/sda :
+-gpt
+-new 1G  type    EFI Sytem
+-new 4G  type    Linux Swap
+-new "le reste"  type    Linux file system
+-write   yes
+-quit
 
 lsblk pour check
 
