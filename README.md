@@ -49,6 +49,8 @@ cd /mnt/etc/nixos </br>
 
 git clone https://github.com/paredesg/nixos.git </br>
 
+cp nixos/* . -R
+
 nixos-install --flake /mnt/etc/nixos#nixos-vm </br>
 
 nixos-enter --root /mnt -c 'passwd eve' </br>
