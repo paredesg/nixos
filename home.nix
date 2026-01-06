@@ -29,7 +29,6 @@ in
   programs.bash = {
     enable = true;
     shellAliases = {
-      btw = "echo i use nixos-btw";
       l = "eza -l --icons=auto -a --group-directories-first";
       ll = "ls -l";
       conf = "sudo vim /etc/nixos/configuration.nix";
@@ -57,3 +56,4 @@ in
   ];
 
 }
+
