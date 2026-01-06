@@ -224,7 +224,7 @@ screens = [
             widgets = [
                 widget.Spacer(length = 8),
                 widget.Image(
-                    filename = "~/.config/qtile/icons/hal-9000-eye.jpg",
+                    filename = "~/.config/qtile/icons/hal.png",
                     scale = "False",
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("qtilekeys-yad")},
                 ),
@@ -234,7 +234,7 @@ screens = [
                     foreground = colors[1]
                 ),
                 widget.GroupBox(
-                    fontsize = 16,
+                    fontsize = 14,
                     margin_y = 5,
                     margin_x = 5,
                     padding_y = 0,
@@ -394,3 +394,4 @@ wl_xcursor_size = 24
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
