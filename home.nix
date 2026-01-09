@@ -11,6 +11,7 @@ let
     rofi = "rofi";
     alacritty = "alacritty";
     picom = "picom";
+    ranger = "ranger";
   };
 in
 
@@ -56,4 +57,5 @@ in
   ];
 
 }
+
 
