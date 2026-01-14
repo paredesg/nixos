@@ -19,11 +19,12 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.eve = import ./home.nix;
+            home-manager.users.eve = import ./home-manager/home.nix;
             home-manager.backupFileExtension = "backup";
           }
         ];
       };
     };
 }
+
 
