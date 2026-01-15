@@ -55,6 +55,7 @@ in
     xwallpaper
     eza # ls 
     mc # midnight commander
+    bat # better cat
   ];
 
 }
