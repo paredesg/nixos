@@ -13,6 +13,7 @@ let
     picom = "picom";
     ranger = "ranger";
     bat = "bat";
+    mc = "mc";
   };
 in
 
