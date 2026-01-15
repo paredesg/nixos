@@ -12,6 +12,7 @@ let
     alacritty = "alacritty";
     picom = "picom";
     ranger = "ranger";
+    bat = "bat";
   };
 in
 
