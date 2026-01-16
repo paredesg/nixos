@@ -57,6 +57,7 @@ in
     eza # ls 
     mc # midnight commander
     bat # better cat
+    ranger # file viewer
   ];
 
 }
