@@ -8,7 +8,7 @@
     ];
 
   nix.settings = {
-    download-buffer-size = 4194304000 ; # 4GB
+    download-buffer-size = 5000000000 ; # 5GB
   };
 
 
